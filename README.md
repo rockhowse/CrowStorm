@@ -20,7 +20,7 @@ sudo -apt -get install cmake
 
 sudo apt-get install google-perftools
 
-Cmake expects the library to be named "libtcmalloc.so" exactly, pop in symlink
+Cmake expects the library to be named "libtcmalloc.so" exactly, pop in symlink:  
 sudo ln -s /usr/lib/libtcmalloc.so.4.2.6 /usr/lib/libtcmalloc.so
 
 ### openssl (v1.0.2g-1)
