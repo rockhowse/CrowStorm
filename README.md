@@ -9,6 +9,10 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 4. [openSSL](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
 5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
 
+## Attributions
+
+CrowStorm icons were created from the origin artwork of [shadow-2016 on deviantart.com](shadow-2016.deviantart.com/art/Crow-631521440).
+
 ## Configure and test crow install
 
 Tested on x64 Ubuntu 16.04 LTS:
