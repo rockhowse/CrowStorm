@@ -7,7 +7,7 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 2. [cmake](https://cmake.org/)		- Flexible make configuration 
 3. [crow](https://github.com/ipkn/crow)	- Simple/fast C++ HTTP server backend 
 4. [openSSL](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
-5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - librares optimized for thread based malloc
+5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
 
 ## Configure and test crow install
 
@@ -45,11 +45,6 @@ cd crow
 mkdir build
 cd build
 cmake .. 
-~~~~
-
-Should result in something similar to this:
-
-~~~~
 -- Found Tcmalloc: /usr/lib/libtcmalloc.so
 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libssl.so;/usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.0.2g") 
 -- No build type selected, default to Release
@@ -63,9 +58,6 @@ Should result in something similar to this:
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/rockhowse/chupacabra/crow/build
-~~~~
-
-~~~~
 make
 ctest
 ~~~~
