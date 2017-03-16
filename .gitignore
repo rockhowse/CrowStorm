@@ -1,0 +1,8 @@
+#eclipse neon project files
+.cproject
+.project
+.settings/
+
+# binaries
+crow_storm
+

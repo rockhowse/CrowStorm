@@ -11,7 +11,7 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 
 ## Configure and test crow install
 
-Tested on x64 Ubuntu 16:04 LTS:
+Tested on x64 Ubuntu 16.04 LTS:
 
 ### cmake (v3.5.1)
 ~~~~
