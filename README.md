@@ -39,6 +39,7 @@ cmake ..
 
 Should result in something similar to this:
 
+~~~~
 -- Found Tcmalloc: /usr/lib/libtcmalloc.so
 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libssl.so;/usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.0.2g") 
 -- No build type selected, default to Release
@@ -52,6 +53,6 @@ Should result in something similar to this:
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/rockhowse/chupacabra/crow/build
-
+~~~~
 
 
