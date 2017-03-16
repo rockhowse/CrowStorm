@@ -20,6 +20,7 @@ rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ ./crow_storm
 ~~~~
 
 ### Server Side
+~~~~
 rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ ./crow_storm 
 (2017-03-16 02:02:32) [INFO    ] Crow/0.1 server is running, local port 18080
 (2017-03-16 02:02:32) [DEBUG   ] Connection open, total 1, 0x11acd90
