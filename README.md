@@ -39,6 +39,8 @@ sudo apt-get install libboost-all-dev
 ~~~~
 
 ### crow (v?)
+You should now have everything you need to compile the crow server/example/tests:
+
 ~~~~
 sudo clone https://github.com/ipkn/crow
 cd crow
