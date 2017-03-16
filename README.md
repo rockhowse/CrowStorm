@@ -1,44 +1,36 @@
 # CrowStorm
 Simple crow based server for requesting and displaying 30 days worth of averages prices for a specific security.
 
-# Dependencies:
+## Dependencies:
 
-Boost   - C++ extension libraries
-Cmake   - Flexible make configuration 
-Crow    - Simple/fast C++ HTTP server backend 
-OpenSSL - encryption libraries used for HTTPS/SSL
-TMalloc - librares optimized for thread based malloc
+1. Boost   - C++ extension libraries
+2. Cmake   - Flexible make configuration 
+3. Crow    - Simple/fast C++ HTTP server backend 
+4. OpenSSL - encryption libraries used for HTTPS/SSL
+5. TMalloc - librares optimized for thread based malloc
 
-# Installation
+## Installation
 
 Tested on x64 Ubuntu 16:04 LTS:
 
-* Cmake (v3.5.1)
+### Cmake (v3.5.1)
 sudo -apt -get install cmake
 
-* Obtain the tmalloc libraries
+### tmalloc (v4.X)
 
 sudo apt-get install google-perftools
 
 Cmake expects the library to be named "libtcmalloc.so" exactly, pop in symlink
 sudo ln -s /usr/lib/libtcmalloc.so.4.2.6 /usr/lib/libtcmalloc.so
 
-* Get openssl (v1.0.2g-1)
+### openssl (v1.0.2g-1)
 
 sudo apt-get install libssl-dev
 
-* Get boost
+### Boost (v1.58.0)
 sudo apt-get install libboost-all-dev
 
-Required Boost libraries:
-
-   -system
-   -thread
-   -chrono
-   -date_time
-   -atomic 
-
-* Get crow
+### crow (v?)
 sudo clone https://github.com/ipkn/crow
 cd crow
 mkdir build
