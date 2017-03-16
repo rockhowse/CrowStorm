@@ -11,7 +11,7 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 
 ## Attributions
 
-CrowStorm icons were created from the origin artwork of [shadow-2016 on deviantart.com](shadow-2016.deviantart.com/art/Crow-631521440).
+CrowStorm icons were created from the origin artwork of [shadow-2016 on deviantart.com](http://shadow-2016.deviantart.com/art/Crow-631521440).
 
 ## Configure and test crow install
 
