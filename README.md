@@ -45,9 +45,7 @@ rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ ./crow_storm
 ~~~~
 
 ### Client Side
-~~~~
 ![crow_storm](http://rockhowse.com/projects/CrowStorm/2017-03-15~crow_storm~v0.0.1.png)
-~~~~
 
 ## Configure and test crow install
 
