@@ -9,6 +9,7 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 3. [crow](https://github.com/ipkn/crow)	- Simple/fast C++ HTTP server backend 
 4. [openssl](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
 5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
+6. [libcurl](https://github.com/curl/curl) - command line utility for using standard web protocols (HTTP, FTP etc.)
 
 ### Client (HTML5 + Javascript + css)
 

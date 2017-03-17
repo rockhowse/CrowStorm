@@ -1,16 +1,12 @@
 #include "../crow/amalgamate/crow_all.h"
 
-// crow requirements
-#include <sstream>
-
-// file manipulation
+#include <fstream>
+#include <iostream>
 #include <sys/stat.h>
 #include <string>
-#include <fstream>
+#include <sstream>
 #include <streambuf>
-
-// used for simple "security" validation
-#include <algorithm>
+#include <curl/curl.h>
 
 ////////////////////// CONTENT TYPES ///////////////////////
 
@@ -58,8 +54,9 @@ inline std::string get_content_type(const std::string& file_path)
 	}
 }
 
-/////////////////////////////// SYMBOL LIST ///////////////////////////////////
+/////////////////////////////// SYMBOLS ///////////////////////////////////
 
+std::map<std::string,std::string> g_symbol_locations;
 std::map<std::string,std::string> g_symbol_list;
 
 /** 
@@ -67,6 +64,39 @@ std::map<std::string,std::string> g_symbol_list;
  */
 void init_symbol_list()
 {
+	std::ifstream infile("symbol_locations.txt");
+
+	//read in the potential sources for symbols
+	std::string line;
+	std::string exchange;
+	std::string out_file_name;
+	size_t equal_pos;
+	while (std::getline(infile, line))
+	{
+		// strip out comments and newlines
+		if(line.at(0) != '#' &&
+		   line.at(0) != '\n')
+		{
+			equal_pos = line.find("=");
+
+			// if we have a valid exchange, generate output file name and add both to map
+			if(equal_pos)
+			{
+				exchange = line.substr(equal_pos+1);
+				out_file_name = "./data/" + exchange + ".csv";
+				g_symbol_locations[line] = out_file_name;
+			}
+		}
+	}
+
+	// Iterate through possible locations, download the artifact locally and save it
+	for (auto& symbol_location : g_symbol_locations) {
+	    std::cout << symbol_location.first << " has value " << symbol_location.second << std::endl;
+	}
+
+
+	// read through the parsed data and extract symbols to populate the symbol_list structure
+
 
 }
 
@@ -95,6 +125,9 @@ int main()
 
     // Initialize supported content types
     init_content_types();
+
+    // Initialize the symbol list on server start
+    init_symbol_list();
 
     //simple default route that returns index.html
     CROW_ROUTE(app, "/")
