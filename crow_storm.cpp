@@ -282,9 +282,6 @@ int main()
 		std::string prefix = company_query;
 		std::transform(prefix.begin(), prefix.end(),prefix.begin(), ::toupper);
 
-		// for now, store a list of symbols as a string until we know the crow::json structure better
-		std::string symbol_list;
-
         // very simple way to do this, iterate through company list and pull out anything that starts with submission
     	for (auto& company_it : g_company_list)
     	{
@@ -292,6 +289,9 @@ int main()
     		std::string company_name = company_it.first;
     		std::transform(company_name.begin(), company_name.end(),company_name.begin(), ::toupper);
     		std::string company_prefix = company_name.substr(0, prefix.size());
+
+    		// for now, store a list of symbols as a string until we know the crow::json structure better
+    		std::string symbol_list;
 
     		// once we have hit a company name that is bigger than the prefix, we are done
     		if (company_prefix.compare(prefix) > 0)
@@ -309,6 +309,10 @@ int main()
         			 symbol_list += symbol + "|";
         		}
 
+        		// remove the end "|"
+        		symbol_list.pop_back();
+
+        		// add symbol to symbol list for this company
         		companies[company_it.first] = symbol_list;
     		}
     	}
