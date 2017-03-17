@@ -5,14 +5,38 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="Simple application for finding and graphing 30 days of data for a single security.">
     		<meta name="author" content="Nate Rock">
-		<link rel="icon" href="/favicon.png">
+		<link href="/bootstrap.min.css" rel="stylesheet">
 		<link href="/crow_storm.css" rel="stylesheet">
+		<link rel="icon" href="/favicon.png">
 		<title>Crow Storm</title>
 	</head>
 	<body>
-		<p>The Cake Is a Lie!</p>
-		<p id="alert-text" name="alert-text" class="alert-text"></p>
+		<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+      			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        			<span class="navbar-toggler-icon"></span>
+      			</button>
+      			<a class="navbar-brand" href="#"><img src="crow_storm.png">CrowStorm</img></a>
+
+      			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        			<ul class="navbar-nav mr-auto">
+        			</ul> 
+       				<form class="form-inline my-2 my-lg-0">
+          				<input class="form-control mr-sm-2" type="text" placeholder="Search">
+          				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        			</form>
+      			</div>
+    		</nav>
+
+    		<div class="container">
+      			<div class="center-content">
+        			<h1>Wecome to Crow Storm</h1>
+        			<p class="lead">Feel free to search for a publically traded US company to see the last 30 day's average prices.</p>
+      			</div>
+    		</div>
+	
+		<script src="/tether-1.4.0.min.js"></script>		
 		<script src="/jquery-3.1.1.min.js"></script>
+		<script src="/bootstrap-4.0.0.min.js"></script>
 		<script src="/crow_storm.js"></script>
 	</body>
 </html>
