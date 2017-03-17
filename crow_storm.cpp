@@ -1,5 +1,6 @@
 #include "../crow/amalgamate/crow_all.h"
 
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <sys/stat.h>
@@ -7,6 +8,7 @@
 #include <sstream>
 #include <streambuf>
 #include <curl/curl.h>
+#include <boost/filesystem.hpp>
 
 ////////////////////// CONTENT TYPES ///////////////////////
 
@@ -57,7 +59,9 @@ inline std::string get_content_type(const std::string& file_path)
 /////////////////////////////// SYMBOLS ///////////////////////////////////
 
 std::map<std::string,std::string> g_symbol_locations;
-std::map<std::string,std::string> g_symbol_list;
+
+// originally used a simple company name -> symbol, but it's one to many so lets use a set for symbol
+std::map<std::string,std::set<std::string>> g_company_list;
 
 // helper functions for writing curl data to an output stream
 // http://www.cplusplus.com/forum/unices/45878/
@@ -106,7 +110,18 @@ CURLcode curl_read(const std::string& url, std::ostream& os, long timeout = 30)
  */
 void init_symbol_list()
 {
-	// config file with list of symbol data URLs
+	// create "data" directory if it doesn't exist
+	std::string data_dir = "./data/";
+	boost::filesystem::path dir(data_dir);
+	if(boost::filesystem::create_directory(data_dir))
+	{
+	    //std::cerr<< "Directory Created: "<<data_dir<<std::endl;
+	}
+
+	// clear out map, useful in case we want to re-load data by calling this function
+	g_company_list.clear();
+
+	// config file with list of symbol exchanges we want to grab
 	std::ifstream infile("symbol_locations.txt");
 
 	//read in the potential sources for symbols
@@ -115,6 +130,7 @@ void init_symbol_list()
 	std::string input_url;
 	size_t equal_pos;
 
+	// 1. Read the possible exchanges we can get data from and load the URL and output file name into map
 	while (std::getline(infile, line))
 	{
 		input_url = "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=" + line + "&render=download";
@@ -123,15 +139,13 @@ void init_symbol_list()
 		if(line.at(0) != '#' &&
 		   line.at(0) != '\n')
 		{
-			out_file_name = "./data/" + line + ".csv";
+			out_file_name = data_dir + line + ".csv";
 			g_symbol_locations[input_url] = out_file_name;
 		}
 	}
 
-	// Iterate through possible locations, download the artifact locally and save it
+	// 2. Iterate through map, download the exchange's symbol list
 	for (auto& symbol_location : g_symbol_locations) {
-	    std::cout << symbol_location.first << " has value " << symbol_location.second << std::endl;
-
 		std::ofstream ofs(symbol_location.second);
 		if(CURLE_OK == curl_read(symbol_location.first, ofs))
 		{
@@ -140,7 +154,71 @@ void init_symbol_list()
 	}
 
 
-	// read through the parsed data and extract symbols to populate the symbol_list structure
+	// 3. Iterate map again, this time pulling out the name and symbol data and popping into symbol_list
+	for (auto& symbol_location : g_symbol_locations) {
+		std::ifstream infile(symbol_location.second);
+
+		while (std::getline(infile, line))
+		{
+			std::string column;
+			std::string symbol;
+			std::string name;
+			uint8_t col_num = 0;
+			size_t pos = 0;
+
+			// have to split on ", and not just , since names have ',' in them
+			std::string delimiter = "\",";
+
+			while ((pos = line.find(delimiter)) != std::string::npos) {
+			    column = line.substr(0, pos);
+
+			    // get the first two columns (Symbol and Name), break out after that
+				if(col_num > 1)
+				{
+					break;
+				}
+
+				// strip double quotes
+				column.erase(std::remove(column.begin(), column.end(), '"'), column.end());
+
+				// skip first line
+				if(col_num == 0 &&
+				   column.compare("Symbol") == 0)
+				{
+					break;
+				}
+				// column 0 is the symbol
+				else if(col_num == 0)
+				{
+					symbol = column;
+				}
+				// column 1 is the company name
+				else if(col_num == 1)
+				{
+					name = column;
+				}
+
+				col_num++;
+
+			    line.erase(0, pos + delimiter.length());
+			}
+
+		    // use company name for key so we can sort for use-case
+		    g_company_list[name].insert(symbol);
+		}
+	}
+
+	// DEBUG - dump some symbols
+	for (auto& company : g_company_list)
+	{
+		std::cout << "Company: " << company.first << std::endl;
+
+		// now dump the symbols for the company
+		for (auto& symbol : company.second)
+		{
+			std::cout << "\t Symbol: " << symbol << std::endl;
+		}
+	}
 }
 
 /////////////////////////////// HELPER FUNCTIONS //////////////////////////////
@@ -165,8 +243,8 @@ int main()
     crow::SimpleApp app;
 
     // *NOTE* ~ performance concern with static file loading
-    //          the files are loaded fully into memory before being returned
-    //          ideally, the bytes could be streamed from the disk/cache instead
+    //          the files are loaded fully into memory before being returned.
+    //          Ideally, the bytes could be streamed from the disk/cache instead
     //          this is especially important in large files
 
     // Initialize supported content types
