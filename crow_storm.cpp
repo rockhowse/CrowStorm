@@ -59,45 +59,88 @@ inline std::string get_content_type(const std::string& file_path)
 std::map<std::string,std::string> g_symbol_locations;
 std::map<std::string,std::string> g_symbol_list;
 
+// helper functions for writing curl data to an output stream
+// http://www.cplusplus.com/forum/unices/45878/
+
+// callback function writes data to a std::ostream
+static size_t data_write(void* buf, size_t size, size_t nmemb, void* userp)
+{
+	if(userp)
+	{
+		std::ostream& os = *static_cast<std::ostream*>(userp);
+		std::streamsize len = size * nmemb;
+		if(os.write(static_cast<char*>(buf), len))
+			return len;
+	}
+
+	return 0;
+}
+
+/**
+ * timeout is in seconds
+ **/
+CURLcode curl_read(const std::string& url, std::ostream& os, long timeout = 30)
+{
+	CURLcode code(CURLE_FAILED_INIT);
+	CURL* curl = curl_easy_init();
+
+	if(curl)
+	{
+		if(CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &data_write))
+		&& CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L))
+		&& CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L))
+		&& CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_FILE, &os))
+		&& CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout))
+		&& CURLE_OK == (code = curl_easy_setopt(curl, CURLOPT_URL, url.c_str())))
+		{
+			code = curl_easy_perform(curl);
+		}
+		curl_easy_cleanup(curl);
+	}
+	return code;
+}
+
+
 /** 
  * Initialize the symbol list with data from Nasdaq's site
  */
 void init_symbol_list()
 {
+	// config file with list of symbol data URLs
 	std::ifstream infile("symbol_locations.txt");
 
 	//read in the potential sources for symbols
 	std::string line;
-	std::string exchange;
 	std::string out_file_name;
+	std::string input_url;
 	size_t equal_pos;
+
 	while (std::getline(infile, line))
 	{
+		input_url = "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=" + line + "&render=download";
+
 		// strip out comments and newlines
 		if(line.at(0) != '#' &&
 		   line.at(0) != '\n')
 		{
-			equal_pos = line.find("=");
-
-			// if we have a valid exchange, generate output file name and add both to map
-			if(equal_pos)
-			{
-				exchange = line.substr(equal_pos+1);
-				out_file_name = "./data/" + exchange + ".csv";
-				g_symbol_locations[line] = out_file_name;
-			}
+			out_file_name = "./data/" + line + ".csv";
+			g_symbol_locations[input_url] = out_file_name;
 		}
 	}
 
 	// Iterate through possible locations, download the artifact locally and save it
 	for (auto& symbol_location : g_symbol_locations) {
 	    std::cout << symbol_location.first << " has value " << symbol_location.second << std::endl;
+
+		std::ofstream ofs(symbol_location.second);
+		if(CURLE_OK == curl_read(symbol_location.first, ofs))
+		{
+			// Web page successfully written to file
+		}
 	}
 
 
 	// read through the parsed data and extract symbols to populate the symbol_list structure
-
-
 }
 
 /////////////////////////////// HELPER FUNCTIONS //////////////////////////////
@@ -116,6 +159,9 @@ inline bool path_exists(const std::string& name)
  */
 int main()
 {
+	// initialize libcurl globally here, do only ONCE
+	curl_global_init(CURL_GLOBAL_ALL);
+
     crow::SimpleApp app;
 
     // *NOTE* ~ performance concern with static file loading
@@ -184,4 +230,7 @@ int main()
     app.port(18080)
         .multithreaded()
         .run();
+
+    // cleanup libcurl globally here, do only ONCE
+    curl_global_cleanup();
 }
