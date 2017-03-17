@@ -3,14 +3,14 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 
 ## Dependencies:
 
-### Server
+### Server (crow + C++)
 1. [boost](http://www.boost.org/)   	- C++ extension libraries
 2. [cmake](https://cmake.org/)		- Flexible make configuration 
 3. [crow](https://github.com/ipkn/crow)	- Simple/fast C++ HTTP server backend 
-4. [openSSL](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
+4. [openssl](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
 5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
 
-### GUI (HTML5 + Javascript)
+### Client (HTML5 + Javascript + css)
 
 1. [jquery](https://jquery.com/)  - Industry Standard Javascript library for dynamic DOM manipulation
 2. [bootstrap](https://v4-alpha.getbootstrap.com/) - Flexible modern styled javascript and CSS layer which allows clean and scalable UI creation
