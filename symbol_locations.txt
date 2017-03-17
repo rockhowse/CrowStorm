@@ -1,0 +1,5 @@
+# list of sources for symbols, not that the return is saved as a .csv
+# other formats would need to be extended
+http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NASDAQ
+http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=NYSE
+http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange=AMEX

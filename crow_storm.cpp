@@ -12,7 +12,9 @@
 // used for simple "security" validation
 #include <algorithm>
 
-// global mime type map
+////////////////////// CONTENT TYPES ///////////////////////
+
+// global content type map
 std::map<std::string,std::string> g_content_types;
 
 /**
@@ -55,6 +57,20 @@ inline std::string get_content_type(const std::string& file_path)
 	    return g_content_types["uknown"];
 	}
 }
+
+/////////////////////////////// SYMBOL LIST ///////////////////////////////////
+
+std::map<std::string,std::string> g_symbol_list;
+
+/** 
+ * Initialize the symbol list with data from Nasdaq's site
+ */
+void init_symbol_list()
+{
+
+}
+
+/////////////////////////////// HELPER FUNCTIONS //////////////////////////////
 
 /**
  * Check to see if a path exists
