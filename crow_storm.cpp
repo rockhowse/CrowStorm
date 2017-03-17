@@ -1,5 +1,7 @@
 #include "../crow/amalgamate/crow_all.h"
 
+#include <algorithm>
+#include <cctype>
 #include <cstdint>
 #include <fstream>
 #include <iostream>
@@ -108,7 +110,7 @@ CURLcode curl_read(const std::string& url, std::ostream& os, long timeout = 30)
 /** 
  * Initialize the symbol list with data from Nasdaq's site
  */
-void init_symbol_list()
+void init_company_list()
 {
 	// create "data" directory if it doesn't exist
 	std::string data_dir = "./data/";
@@ -209,6 +211,7 @@ void init_symbol_list()
 	}
 
 	// DEBUG - dump some symbols
+	/*
 	for (auto& company : g_company_list)
 	{
 		std::cout << "Company: " << company.first << std::endl;
@@ -219,6 +222,7 @@ void init_symbol_list()
 			std::cout << "\t Symbol: " << symbol << std::endl;
 		}
 	}
+	*/
 }
 
 /////////////////////////////// HELPER FUNCTIONS //////////////////////////////
@@ -250,8 +254,8 @@ int main()
     // Initialize supported content types
     init_content_types();
 
-    // Initialize the symbol list on server start
-    init_symbol_list();
+    // Initialize the company->symbol list on server start
+    init_company_list();
 
     //simple default route that returns index.html
     CROW_ROUTE(app, "/")
@@ -266,6 +270,50 @@ int main()
 		r.add_header("Content-Type", get_content_type(full_path));
 
 		return r;
+    });
+
+
+    //route for returning a list of companies and their symbols based on "prefix"
+    CROW_ROUTE(app, "/symbol/<string>")
+    ([](std::string company_query){
+        crow::json::wvalue companies;
+
+		// convert company_query to upper.. ONCE
+		std::string prefix = company_query;
+		std::transform(prefix.begin(), prefix.end(),prefix.begin(), ::toupper);
+
+		// for now, store a list of symbols as a string until we know the crow::json structure better
+		std::string symbol_list;
+
+        // very simple way to do this, iterate through company list and pull out anything that starts with submission
+    	for (auto& company_it : g_company_list)
+    	{
+    		// convert company name to upper (should probably cache this for speed)
+    		std::string company_name = company_it.first;
+    		std::transform(company_name.begin(), company_name.end(),company_name.begin(), ::toupper);
+    		std::string company_prefix = company_name.substr(0, prefix.size());
+
+    		// once we have hit a company name that is bigger than the prefix, we are done
+    		if (company_prefix.compare(prefix) > 0)
+    		{
+    			//break;
+    		}
+
+    		// if the company name starts with the prefix, we have a match
+    		if(company_prefix == prefix) {
+        		std::cout << "Company: " << company_it.first << std::endl;
+
+        		// now dump the symbols for the company
+        		for (auto& symbol : company_it.second)
+        		{
+        			 symbol_list += symbol + "|";
+        		}
+
+        		companies[company_it.first] = symbol_list;
+    		}
+    	}
+
+    	return companies;
     });
 
     // route for loading static files (html/javascript/css)
