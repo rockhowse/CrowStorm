@@ -16,6 +16,8 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 1. [jquery](https://jquery.com/)  - Industry Standard Javascript library for dynamic DOM manipulation
 2. [bootstrap](https://v4-alpha.getbootstrap.com/) - Flexible modern styled javascript and CSS layer which allows clean and scalable UI creation
 3. [tether](http://tether.io/)  - A client-side library to make absolutely positioned elements attach to elements in the page efficiently
+4. [techanjs](http://techanjs.org/) - D3 based charting library that provides many capabilities
+5. [d3.js](https://d3js.org/) - Javascript library used for many dynamic interfaces uese HTML, SVG and CSS4.
 
 ## Attributions
 

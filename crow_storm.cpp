@@ -463,8 +463,12 @@ int main()
 
     			num_prices_found++;
 
-    		    // date for key and OHLCV as data
-    			symbol_prices[date] = ohlcv_json;
+    			// only do this if we have a non-empty date
+    			if(date != "")
+    			{
+					// date for key and OHLCV as data
+					symbol_prices[date] = ohlcv_json;
+    			}
     		}
     	}
 
