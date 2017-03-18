@@ -209,20 +209,6 @@ void init_company_list()
 		    g_company_list[name].insert(symbol);
 		}
 	}
-
-	// DEBUG - dump some symbols
-	/*
-	for (auto& company : g_company_list)
-	{
-		std::cout << "Company: " << company.first << std::endl;
-
-		// now dump the symbols for the company
-		for (auto& symbol : company.second)
-		{
-			std::cout << "\t Symbol: " << symbol << std::endl;
-		}
-	}
-	*/
 }
 
 /////////////////////////////// HELPER FUNCTIONS //////////////////////////////
@@ -274,7 +260,7 @@ int main()
 
 
     //route for returning a list of companies and their symbols based on "prefix"
-    CROW_ROUTE(app, "/symbol/<string>")
+    CROW_ROUTE(app, "/company/<string>")
     ([](std::string company_query){
         crow::json::wvalue companies;
 
@@ -292,12 +278,6 @@ int main()
 
     		// for now, store a list of symbols as a string until we know the crow::json structure better
     		std::string symbol_list;
-
-    		// once we have hit a company name that is bigger than the prefix, we are done
-    		if (company_prefix.compare(prefix) > 0)
-    		{
-    			//break;
-    		}
 
     		// if the company name starts with the prefix, we have a match
     		if(company_prefix == prefix) {
