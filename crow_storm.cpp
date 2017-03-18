@@ -5,12 +5,15 @@
 #include <cstdint>
 #include <fstream>
 #include <iostream>
-#include <sys/stat.h>
 #include <string>
 #include <sstream>
 #include <streambuf>
+
 #include <curl/curl.h>
+#include <sys/stat.h>
+
 #include <boost/filesystem.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
 
 ////////////////////// CONTENT TYPES ///////////////////////
 
@@ -223,6 +226,62 @@ inline bool path_exists(const std::string& name)
 }
 
 /**
+ * Build Yahoo URL given the symbol name and the number of days in the past for which we need data.
+ */
+
+// boost date formatting used for day/year, month is special in that it's zero indexed
+const std::locale fmt_yahoo_start_day_year(std::locale::classic(), new boost::gregorian::date_facet("&b=%d&c=%Y"));
+const std::locale fmt_yahoo_end_day_year(std::locale::classic(), new boost::gregorian::date_facet("&e=%d&f=%Y"));
+
+std::string build_yahoo_url(std::string symbol, uint32_t days_prior)
+{
+	std::string yahoo_url;
+	std::string start_month;
+	std::string end_month;
+	boost::gregorian::date today_local, days_prior_local;
+	boost::gregorian::days days_object(days_prior);
+
+	today_local = boost::gregorian::day_clock::local_day();
+	days_prior_local = today_local - days_object;
+
+	yahoo_url = "http://ichart.finance.yahoo.com/table.csv?s=" + symbol;
+
+	// build date string, this is a bit annoying because Yahoo does the following
+	// 1. month is SINGLE digit, 0 based offset (Jan=0, Feb=1 etc.)
+	// 2. day is TWO digits (zero padded)
+	// 3. year is FOUR digits
+	// sample showing dates between 2017-02-16 and 2017-03-18:
+	// "&a=1&b=16&c=2017&d=2&e=18&f=2017"
+
+	// get the start MONTH first, have to subtract by one for zero index
+	yahoo_url += "&a=" + std::to_string(days_prior_local.month()-1);
+
+	// now get the start DAY and year using boost's date formatting
+	std::ostringstream os_yahoo_start_day_year;
+	os_yahoo_start_day_year.imbue(fmt_yahoo_start_day_year);
+	os_yahoo_start_day_year << days_prior_local;
+
+	yahoo_url += os_yahoo_start_day_year.str();
+
+	// get the end MONTH first, have to subtract by one for zero index
+	yahoo_url += "&d=" + std::to_string(today_local.month()-1);
+
+	// now get the end DAY and year using boost's date formatting
+	std::ostringstream os_yahoo_end_day_year;
+	os_yahoo_end_day_year.imbue(fmt_yahoo_end_day_year);
+	os_yahoo_end_day_year << today_local;
+
+	yahoo_url += os_yahoo_end_day_year.str();
+
+	// add final params to URL
+	yahoo_url += "&g=d&ignore=.csv";
+
+	std::cout << "Yahoo URL: " << yahoo_url << std::endl;
+
+	return yahoo_url;
+}
+
+/**
  * Main crow based C++ HTTP server used for delivering the content needed by the CrowStorm platform
  */
 int main()
@@ -319,6 +378,29 @@ int main()
 
     	return companies;
     });
+
+    // route for returning OHLC data for the past 30 days from yahoo's data api for a specific symbol
+    CROW_ROUTE(app, "/symbol/<string>")
+    ([](std::string symbol_query){
+        crow::json::wvalue symbol_prices;
+        uint32_t num_prices_found;
+        std::string yahoo_url;
+
+        num_prices_found = 0;
+
+        // let's build the URL based on the symbol and 30 for now
+        // ENHANCEMENT ~ allow user to choose number of days (add max limit server side)
+        yahoo_url = build_yahoo_url(symbol_query, 30);
+
+    	// have to handle no results found
+    	if(!num_prices_found)
+    	{
+    		symbol_prices["NONE_FOUND"] = "";
+    	}
+
+    	return symbol_prices;
+    });
+
 
     // route for loading static files (html/javascript/css)
     // VERY insecure as it does no URL validation and could be subject to
