@@ -259,18 +259,28 @@ int main()
     });
 
 
-    //route for returning a list of companies and their symbols based on "prefix"
-    CROW_ROUTE(app, "/company/<string>")
-    ([](std::string company_query){
+    // route for returning a list of companies and their symbols based on "prefix"
+    // added a return limit for quick ajax return
+    CROW_ROUTE(app, "/company/<string>/<int>")
+    ([](std::string company_query, uint32_t return_limit){
         crow::json::wvalue companies;
+        uint32_t num_companies_found;
 
 		// convert company_query to upper.. ONCE
 		std::string prefix = company_query;
 		std::transform(prefix.begin(), prefix.end(),prefix.begin(), ::toupper);
 
+		num_companies_found = 0;
+
         // very simple way to do this, iterate through company list and pull out anything that starts with submission
     	for (auto& company_it : g_company_list)
     	{
+    		// if a return_limit was passed in, return after that many records
+    		if(return_limit &&
+    		   num_companies_found >= return_limit) {
+    			break;
+    		}
+
     		// convert company name to upper (should probably cache this for speed)
     		std::string company_name = company_it.first;
     		std::transform(company_name.begin(), company_name.end(),company_name.begin(), ::toupper);
@@ -294,7 +304,17 @@ int main()
 
         		// add symbol to symbol list for this company
         		companies[company_it.first] = symbol_list;
+
+        		num_companies_found++;
+
+        		std::cout << return_limit << "|" << num_companies_found << std::endl;
     		}
+    	}
+
+    	// have to handle no results found
+    	if(!num_companies_found)
+    	{
+    		companies["NONE_FOUND"] = "";
     	}
 
     	return companies;
