@@ -276,8 +276,6 @@ std::string build_yahoo_url(std::string symbol, uint32_t days_prior)
 	// add final params to URL
 	yahoo_url += "&g=d&ignore=.csv";
 
-	std::cout << "Yahoo URL: " << yahoo_url << std::endl;
-
 	return yahoo_url;
 }
 
@@ -391,6 +389,84 @@ int main()
         // let's build the URL based on the symbol and 30 for now
         // ENHANCEMENT ~ allow user to choose number of days (add max limit server side)
         yahoo_url = build_yahoo_url(symbol_query, 30);
+
+    	// pull in data
+    	std::ostringstream os_yahoo_data_stream;
+    	if(CURLE_OK == curl_read(yahoo_url, os_yahoo_data_stream))
+    	{
+    		std::istringstream in_string(os_yahoo_data_stream.str());
+    		std::string line;
+
+    		while (std::getline(in_string, line))
+    		{
+    			std::string column, date, ohlcv_json;
+    			uint8_t col_num = 0;
+    			size_t pos = 0;
+    			bool break_early = false;
+
+    			// data is fairly clean, can split on just ","
+    			std::string delimiter = ",";
+
+    			while ((pos = line.find(delimiter)) != std::string::npos) {
+    			    column = line.substr(0, pos);
+
+    				// populate data depending on which column we are on
+    				switch(col_num){
+    				// date
+    				case 0:
+    					// skip first line
+    					if(column.compare("Date") == 0)
+    					{
+    						break_early = true;
+    					}
+    					// otherwise assign date
+    					else
+    					{
+    						date = column;
+    					}
+    					break;
+    				// open
+    				case 1:
+    					ohlcv_json +=  column + "|";
+    					break;
+					// high
+    				case 2:
+    					ohlcv_json += column + "|";
+    					break;
+					// low
+    				case 3:
+    					ohlcv_json += column + "|";
+						break;
+					// close
+    				case 4:
+    					ohlcv_json += column + "|";
+    					break;
+    				// volume
+    				case 5:
+    					ohlcv_json += column;
+    					break;
+    				default:
+    					// all other columns do nothing
+    					break;
+    				}
+
+    				col_num++;
+
+    				// skip the first line
+    				if(break_early)
+    				{
+    					break;
+    				}
+
+    			    line.erase(0, pos + delimiter.length());
+    			}
+
+    			num_prices_found++;
+
+    		    // date for key and OHLCV as data
+    			symbol_prices[date] = ohlcv_json;
+    		}
+    	}
 
     	// have to handle no results found
     	if(!num_prices_found)
