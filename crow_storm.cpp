@@ -377,8 +377,8 @@ int main()
     	return companies;
     });
 
-    // route for returning OHLC data for the past 30 days from yahoo's data api for a specific symbol
-    CROW_ROUTE(app, "/symbol/<string>")
+    // route for returning OHLC data for the past 30 days from yahoo's data api using JSON + | delimited rows
+    CROW_ROUTE(app, "/symbol/json/<string>")
     ([](std::string symbol_query){
         crow::json::wvalue symbol_prices;
         uint32_t num_prices_found;
@@ -479,6 +479,27 @@ int main()
     	}
 
     	return symbol_prices;
+    });
+
+    // route for returning OHLC data for the past 30 days from yahoo's data api returning .csv
+    CROW_ROUTE(app, "/symbol/csv/<string>")
+       ([](std::string symbol_query){
+		std::string yahoo_url;
+
+		// let's build the URL based on the symbol and 30 for now
+		// ENHANCEMENT ~ allow user to choose number of days (add max limit server side)
+		yahoo_url = build_yahoo_url(symbol_query, 30);
+
+		// pull in data
+		std::ostringstream os_yahoo_data_stream;
+		if(CURLE_OK == curl_read(yahoo_url, os_yahoo_data_stream))
+		{
+			return os_yahoo_data_stream.str();
+		}
+		else
+		{
+			return std::string("NO_DATA_FOUND");
+		}
     });
 
 
