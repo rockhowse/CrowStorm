@@ -16,8 +16,8 @@ Simple crow based server and single-page HTML5 based client for searching and di
 1. [jquery (v3.1.1)](https://jquery.com/)  - Industry Standard Javascript library for dynamic DOM manipulation
 2. [bootstrap (v4.0.0)](https://v4-alpha.getbootstrap.com/) - Flexible modern styled javascript and CSS layer which allows clean and scalable UI creation
 3. [tether (v1.4.0](http://tether.io/)  - A client-side library to make absolutely positioned elements attach to elements in the page efficiently
-4. [techanjs (v0.8.0)](http://techanjs.org/) - D3 based charting library that provides many capabilities
-5. [d3.js (v4.7.3)](https://d3js.org/) - Javascript library used for many dynamic interfaces uese HTML, SVG and CSS4.
+4. [techanjs (v0.8.0)](http://techanjs.org/) - D3 based charting library that provides many financial charting capabilities 
+5. [d3.js (v4.7.3)](https://d3js.org/) - Javascript library used for many dynamic interfaces uese HTML, SVG and CSS4
 
 ## Attributions
 
@@ -150,7 +150,7 @@ make
 g++ -o crow_storm crow_storm.cpp -std=c++14 -O3 -lboost_system -lboost_thread -lboost_filesystem -lboost_date_time -lpthread -lcurl
 ~~~~
 
-If this process completes without errors, all the dependencies are comfigured correctly and you should be rdy to start up the crow_storm server!
+If this process completes without errors, all the dependencies are configured correctly and you should be rdy to start up the crow_storm server!
 
 #### Server Side
 ~~~~
@@ -208,4 +208,5 @@ In the instance where a company has multiple symbols, ALL symbols for that compa
 2. Refactor for OO ~ the current server design is more functional than Object Oriented. The content type, symbol lookup and data acquisition could be moved to their own objects
 3. Optimizations   ~ Ideally, company/symbol data would be placed into a local data store with pre-coverted and indexed data instead of re-computing it on every request. Also the static file route should use streaming instead of reading the entire artifact into memory before returning to support large artifacts.
 4. User Prefereces ~ The results for the quick query are limited to 5 and the number of days of history are set at 30, these could easilby be added as client side parameters.
-
+5. Robust Testing  ~ Ideally all back-end service calls should have unit and integration tests
+6. Client Examples ~ Since the back-end API consists of simple HTTP GET URLs and known returns, it would be fairly trivial to implement other clients (Java, C#, Python, Ruby, etc.). Examples would be a great addition.
