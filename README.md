@@ -61,8 +61,13 @@ sudo apt-get install libcurl4-gnutls-dev
 ### crow (v?)
 You should now have everything you need to compile the crow server/example/tests:
 
+*NOTE* crow and CrowStorm should be cloned into the same parent directory as CrowStorm relies on the relative path ../crow
+
 ~~~~
-sudo clone https://github.com/ipkn/crow
+clone https://github.com/ipkn/crow
+~~~~
+
+~~~~
 cd crow
 mkdir build
 cd build
