@@ -201,3 +201,11 @@ Once you have found the company and symbol to your liking, select the symbol and
 In the instance where a company has multiple symbols, ALL symbols for that company remain visible and the current graph remains "active" so you can quickly switch between any symbols for a specific company.
 
 ![CrowStorm ~ Multi Select](http://rockhowse.com/projects/CrowStorm/CrowStorm-Multi-Select.png)
+
+## Potential Enhancements
+
+1. Robust security ~ currently it does minimal URL/input validation/scrubbing. Popping in a framework like OWASP would make it more secure.
+2. Refactor for OO ~ the current server design is more functional than Object Oriented. The content type, symbol lookup and data acquisition could be moved to their own objects
+3. Optimizations   ~ Ideally, company/symbol data would be placed into a local data store with pre-coverted and indexed data instead of re-computing it on every request. Also the static file route should use streaming instead of reading the entire artifact into memory before returning to support large artifacts.
+4. User Prefereces ~ The results for the quick query are limited to 5 and the number of days of history are set at 30, these could easilby be added as client side parameters.
+
