@@ -1,5 +1,5 @@
 # CrowStorm
-Simple crow based server for requesting and displaying 30 days worth of averages prices for a specific security.
+Simple crow based server and single-page HTML5 based client for searching and displaying the past 30 day's OHLC and volume data for a selected company and symbol.
 
 ## Dependencies:
 
