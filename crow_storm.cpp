@@ -43,7 +43,7 @@ inline std::string get_content_type(const std::string& file_path)
 
 	if(idx != std::string::npos)
 	{
-		extension = file_path.substr(idx+1);
+		extension = file_path.substr(idx);
 
 		// if we haven't found this known extension set to application/unknown
 		if(g_content_types.find(extension) == g_content_types.end())
