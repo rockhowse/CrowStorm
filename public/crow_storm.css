@@ -1,3 +1,5 @@
+
+/**** page layout ****/
 body {
   padding-top: 5rem;
 }
@@ -17,6 +19,7 @@ body {
   width: auto;
 }
 
+/**** search results ****/
 #update {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	width: 70%;
@@ -106,10 +109,13 @@ body {
 	}
 }
 
-path.line {
-    fill: none;
-    stroke: #000000;
-    stroke-width: 1;
+/**** chart ****/
+.axis text {
+    font-size: 12px;
+}
+
+text.symbol {
+    fill: #BBBBBB;
 }
 
 path.candle {
@@ -128,5 +134,32 @@ path.candle.up {
 path.candle.down {
     fill: #FF0000;
     stroke: #FF0000;
+}
+
+path.volume {
+    fill: #DDDDDD;
+}
+
+rect.pane {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+}
+
+.indicator path.line {
+    fill: none;
+    stroke-width: 1;
+}
+
+.ma-0 path.line {
+    stroke: #1f77b4;
+}
+
+.ma-1 path.line {
+    stroke: #aec7e8;
+}
+
+.ma-2 path.line {
+    stroke: #ff7f0e;
 }
 
