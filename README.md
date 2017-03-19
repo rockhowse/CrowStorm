@@ -141,36 +141,41 @@ cd CrowStorm
 ### Example usage
 
 ~~~~
-rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ make clean
+make clean
+
 rm -f crow_storm
-rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ make
-g++ -o crow_storm crow_storm.cpp -std=c++14 -O3 -lboost_system -lboost_thread -lpthread
-rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ ./crow_storm
+rm -f crow_storm_d
+
+make
+g++ -o crow_storm crow_storm.cpp -std=c++14 -O3 -lboost_system -lboost_thread -lboost_filesystem -lboost_date_time -lpthread -lcurl
 ~~~~
+
+If this process completes without errors, all the dependencies are comfigured correctly and you should be rdy to start up the crow_storm server!
 
 #### Server Side
 ~~~~
-rockhowse@cubacious-linux:~/chupacabra/CrowStorm$ ./crow_storm
-(2017-03-16 02:02:32) [INFO    ] Crow/0.1 server is running, local port 18080
-(2017-03-16 02:02:32) [DEBUG   ] Connection open, total 1, 0x11acd90
-(2017-03-16 02:02:54) [DEBUG   ] 0x11acd90 timer cancelled: 0 0
-(2017-03-16 02:02:54) [DEBUG   ] timer add inside: 0x7ff124d3b4b0 0
-(2017-03-16 02:02:54) [DEBUG   ] 0x11acd90 timer added: 0x7ff124d3b4b0 0
-(2017-03-16 02:02:54) [DEBUG   ] Connection open, total 2, 0x7ff110000960
-(2017-03-16 02:02:54) [DEBUG   ] 0x11acd90 timer cancelled: 0x7ff124d3b4b0 0
-(2017-03-16 02:02:54) [INFO    ] Request: 127.0.0.1:47674 0x11acd90 HTTP/1.1 GET /
-(2017-03-16 02:02:54) [DEBUG   ] Matched rule '/' 1 / 2
-(2017-03-16 02:02:54) [INFO    ] Response: 0x11acd90 / 200 0
-(2017-03-16 02:02:54) [DEBUG   ] 0x11acd90 timer cancelled: 0 0
-(2017-03-16 02:02:54) [DEBUG   ] timer add inside: 0x7ff124d3b4b0 1
-(2017-03-16 02:02:54) [DEBUG   ] 0x11acd90 timer added: 0x7ff124d3b4b0 1
-(2017-03-16 02:02:59) [DEBUG   ] timer call: 0x7ff124d3b4b0 1
-(2017-03-16 02:02:59) [DEBUG   ] 0x11acd90 timer cancelled: 0x7ff124d3b4b0 1
-(2017-03-16 02:02:59) [DEBUG   ] 0x11acd90 from read(1)
-(2017-03-16 02:02:59) [DEBUG   ] 0x11acd90 is_reading 0 is_writing 0
-(2017-03-16 02:02:59) [DEBUG   ] 0x11acd90 delete (idle)
-(2017-03-16 02:02:59) [DEBUG   ] 0x11acd90 timer cancelled: 0 1
-(2017-03-16 02:02:59) [DEBUG   ] Connection closed, total 1, 0x11acd90
+./crow_storm 
+
+(2017-03-19 03:07:51) [INFO    ] Crow/0.1 server is running, local port 18080
+(2017-03-19 03:07:51) [DEBUG   ] Connection open, total 1, 0x2133ef0
+~~~~
+
+You should now be able to open up your browser and connect to your local CrowStorm server on port 18080.
+
+* [http://localhost:18080](http://localhost:18080) - local CrowStorm server
+
+The server downloads and caches the list of companies and symbols from Nasdaq's site on startup. You can validate these files were created by navigating to the data/ directory inside the CrowStorm project.
+
+~~~~
+cd data
+ls -alh
+
+total 868K
+drwxrwxr-x 2 rockhowse rockhowse 4.0K Mar 18 22:07 .
+drwxrwxr-x 6 rockhowse rockhowse 4.0K Mar 18 22:07 ..
+-rw-rw-r-- 1 rockhowse rockhowse  46K Mar 18 22:07 amex.csv
+-rw-rw-r-- 1 rockhowse rockhowse 417K Mar 18 22:07 nasdaq.csv
+-rw-rw-r-- 1 rockhowse rockhowse 392K Mar 18 22:07 nyse.csv
 ~~~~
 
 #### Client Side
