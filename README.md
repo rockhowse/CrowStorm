@@ -179,5 +179,25 @@ drwxrwxr-x 6 rockhowse rockhowse 4.0K Mar 18 22:07 ..
 ~~~~
 
 #### Client Side
-![crow_storm](http://rockhowse.com/projects/CrowStorm/2017-03-15~crow_storm~v0.0.1.png)
 
+### Home Page
+
+When you first connect, you should be greeted with a simple interface with directions on how to access the OHLC and volume data for the past 30 days:
+
+![CrowStorm ~ Home](http://rockhowse.com/projects/CrowStorm/CrowStorm-Home.png)
+
+### Dynamic Search
+
+CrowStorm uses async AJAX requests to update the top 5 most relavant searches by company name so as you type you should see the list update dynamically. Here you can see "appl" has been typed and the interface includes 5 companies whoes names start with what has been typed.
+
+![CrowStorm ~ Search](http://rockhowse.com/projects/CrowStorm/CrowStorm-Search.png)
+
+### OHLC And Volume Graphs
+
+Once you have found the company and symbol to your liking, select the symbol and a graph showing the last 30 days worth of data should show up immediately. In this image, the symbol "AAPL" was selected. 
+
+![CrowStorm ~ Select](http://rockhowse.com/projects/CrowStorm/CrowStorm-Select.png)
+
+In the instance where a company has multiple symbols, ALL symbols for that company remain visible and the current graph remains "active" so you can quickly switch between any symbols for a specific company.
+
+![CrowStorm ~ Multi Select](http://rockhowse.com/projects/CrowStorm/CrowStorm-Multi-Select.png)
