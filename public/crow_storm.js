@@ -1,8 +1,19 @@
 
 // potentially intialize some stuff when the doc is ready
 $(document).ready(function() {
-  
+
+	// real-time updates limit to 5 results
+	$('#search-txt').keyup(function(){
+        	searchCompanies(5);
+	});
+
+
+	// if they click search button, don't limit results
+	$("#search-btn").click(function() {
+		searchCompanies(0);
+	});
 })
+
 
 function clearChart() {
 	$("svg").first().remove();
@@ -236,10 +247,6 @@ function chart(name, symbol, fullWidth, fullHeight) {
 }
 
 
-
-
-
-
 function drawGraph(cur_btn_name, name, symbol, symbols) {
 
 	$('#update').empty();
@@ -250,54 +257,53 @@ function drawGraph(cur_btn_name, name, symbol, symbols) {
     chart(name, symbol, 960, 500);
 }
 
+function searchCompanies(searchLimit) {
+        var search_field = $('#search-txt').val();
+        var search_url = "/company/" + search_field + "/" + searchLimit;
+        var btn_list = [];
 
-$('#search-txt').keyup(function(){
-	var search_field = $('#search-txt').val();
-	var search_url = "/company/" + search_field + "/5";
-	var btn_list = [];
-	
-	if(search_field == "") {
-		var output = '<ul class="searchresult"></ul>';
-		$('#update').html(output);
-		return;
-	}
-	
-	$.getJSON(search_url, function(data){
-		var output = '<ul class="searchresult">';
-		
-    	clearChart();
-    
-		$.each(data, function(key, val){
-			output +='<li>';
-			output +='<h2>' + key + '</h2>';
-			output +='<p>';
-			var symbols = val.split('|');
-			
-			$.each(symbols, function( index, value ) {
-			  var btn_name = 'btn-' + value.replace("^","-").replace(".","-");
-			  var btn_info = [btn_name, key, value, val];
-			  
-			  output += '<button id="'+ btn_name +'" name="' + btn_name + '" class="btn btn-secondary my-2 my-sm-0">' + value + '</button>';
-			
-			  btn_list.push(btn_info);
-			});
-			
-			output += '</p>'
-			output +='</li>';
-		});
-		
-		output += '</ul>';
-	
-		$('#update').html(output);
-		
-		// add button handlers here
-		$.each(btn_list, function( index, btn_info ) {	 
-			$("#" + btn_info[0]).click(function() {
-				drawGraph(btn_info[0], btn_info[1], btn_info[2], btn_info[3]);
-			});
-		});		
-	})
-	.fail(function() {
-	    console.log( "error" );
-	});
-});
+        if(search_field == "") {
+                var output = '<ul class="searchresult"></ul>';
+                $('#update').html(output);
+                return;
+        }
+
+        $.getJSON(search_url, function(data){
+                var output = '<ul class="searchresult">';
+
+        clearChart();
+
+                $.each(data, function(key, val){
+                        output +='<li>';
+                        output +='<h2>' + key + '</h2>';
+                        output +='<p>';
+                        var symbols = val.split('|');
+
+                        $.each(symbols, function( index, value ) {
+                          var btn_name = 'btn-' + value.replace("^","-").replace(".","-");
+                          var btn_info = [btn_name, key, value, val];
+
+                          output += '<button id="'+ btn_name +'" name="' + btn_name + '" class="btn btn-secondary my-2 my-sm-0">' + value + '</button>';
+
+                          btn_list.push(btn_info);
+                        });
+
+                        output += '</p>'
+                        output +='</li>';
+                });
+
+                output += '</ul>';
+
+                $('#update').html(output);
+
+                // add button handlers here
+                $.each(btn_list, function( index, btn_info ) {
+                        $("#" + btn_info[0]).click(function() {
+                                drawGraph(btn_info[0], btn_info[1], btn_info[2], btn_info[3]);
+                        });
+                });
+        })
+        .fail(function() {
+            console.log( "error" );
+        });
+}
