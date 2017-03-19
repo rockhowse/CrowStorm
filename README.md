@@ -4,20 +4,20 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 ## Dependencies:
 
 ### Server (crow + C++)
-1. [boost](http://www.boost.org/)   	- C++ extension libraries
-2. [cmake](https://cmake.org/)		- Flexible make configuration 
+1. [boost (v1.58.0)](http://www.boost.org/)   	- C++ extension libraries
+2. [cmake (v3.5.1)](https://cmake.org/)		- Flexible make configuration 
 3. [crow](https://github.com/ipkn/crow)	- Simple/fast C++ HTTP server backend 
-4. [openssl](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
-5. [tmalloc](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
-6. [libcurl](https://github.com/curl/curl) - command line utility for using standard web protocols (HTTP, FTP etc.)
+4. [openssl (v1.0.2g)](https://www.openssl.org/)	- encryption libraries used for HTTPS/SSL
+5. [tmalloc (v4.x.x)](http://goog-perftools.sourceforge.net/doc/tcmalloc.html) - libraries optimized for thread based malloc
+6. [libcurl (v7.47.0)](https://github.com/curl/curl) - command line utility for using standard web protocols (HTTP, FTP etc.)
 
 ### Client (HTML5 + Javascript + css)
 
-1. [jquery](https://jquery.com/)  - Industry Standard Javascript library for dynamic DOM manipulation
-2. [bootstrap](https://v4-alpha.getbootstrap.com/) - Flexible modern styled javascript and CSS layer which allows clean and scalable UI creation
-3. [tether](http://tether.io/)  - A client-side library to make absolutely positioned elements attach to elements in the page efficiently
-4. [techanjs](http://techanjs.org/) - D3 based charting library that provides many capabilities
-5. [d3.js](https://d3js.org/) - Javascript library used for many dynamic interfaces uese HTML, SVG and CSS4.
+1. [jquery (v3.1.1)](https://jquery.com/)  - Industry Standard Javascript library for dynamic DOM manipulation
+2. [bootstrap (v4.0.0)](https://v4-alpha.getbootstrap.com/) - Flexible modern styled javascript and CSS layer which allows clean and scalable UI creation
+3. [tether (v1.4.0](http://tether.io/)  - A client-side library to make absolutely positioned elements attach to elements in the page efficiently
+4. [techanjs (v0.8.0)](http://techanjs.org/) - D3 based charting library that provides many capabilities
+5. [d3.js (v4.7.3)](https://d3js.org/) - Javascript library used for many dynamic interfaces uese HTML, SVG and CSS4.
 
 ## Attributions
 
@@ -42,7 +42,7 @@ Cmake expects the library to be named "libtcmalloc.so" exactly, pop in symlink:
 sudo ln -s /usr/lib/libtcmalloc.so.4.2.6 /usr/lib/libtcmalloc.so
 ~~~~
 
-### openssl (v1.0.2g-1)
+### openssl (v1.0.2g)
 ~~~~
 sudo apt-get install libssl-dev
 ~~~~
@@ -51,6 +51,12 @@ sudo apt-get install libssl-dev
 ~~~~
 sudo apt-get install libboost-all-dev
 ~~~~
+
+### libcurl (v?)
+~~~~
+sudo apt-get install libcurl4-gnutls-dev
+~~~~
+
 
 ### crow (v?)
 You should now have everything you need to compile the crow server/example/tests:
