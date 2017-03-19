@@ -24,7 +24,7 @@ body {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	width: 70%;
 	margin: 0 auto;
-	border-top: 1px dotted #CCC;
+	margin-bottom: 1.0em;
 }
 
 #update ul {

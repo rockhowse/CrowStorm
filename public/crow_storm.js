@@ -76,7 +76,7 @@ function chart(name, symbol, fullWidth, fullHeight) {
             .range([0, width]);
 
     var y = d3.scaleLinear()
-            .range([height, 0]);
+          .range([height, 0]);
 
     var yPercent = y.copy();   // Same as y at this stage, will get a different domain later
 
@@ -113,7 +113,7 @@ function chart(name, symbol, fullWidth, fullHeight) {
             .ticks(4);
 
     var percentAxis = d3.axisLeft(yPercent)
-            .ticks(4)
+            .ticks(0)
             .tickFormat(d3.format('+.1%'));
 
     var volumeAxis = d3.axisRight(yVolume)
@@ -200,7 +200,7 @@ function chart(name, symbol, fullWidth, fullHeight) {
 
         x.domain(techan.scale.plot.time(data, accessor).domain());
         y.domain(techan.scale.plot.ohlc(data.slice(indicatorPreRoll), accessor).domain());
-        yPercent.domain(techan.scale.plot.percent(y, accessor(data[indicatorPreRoll])).domain());
+        //yPercent.domain(techan.scale.plot.percent(y, accessor(data[indicatorPreRoll])).domain());
         yVolume.domain(techan.scale.plot.volume(data, accessor.v).domain());
 
         svg.select("g.candlestick").datum(data).call(candlestick);
@@ -212,7 +212,7 @@ function chart(name, symbol, fullWidth, fullHeight) {
 
         zoomableInit = x.zoomable().domain([indicatorPreRoll, data.length]).copy(); // Zoom in a little to hide indicator preroll
         yInit = y.copy();
-        yPercentInit = yPercent.copy();
+        //yPercentInit = yPercent.copy();
 
         draw();
     });
