@@ -348,8 +348,6 @@ int main()
 
     		// if the company name starts with the prefix, we have a match
     		if(company_prefix == prefix) {
-        		std::cout << "Company: " << company_it.first << std::endl;
-
         		// now dump the symbols for the company
         		for (auto& symbol : company_it.second)
         		{
@@ -363,15 +361,13 @@ int main()
         		companies[company_it.first] = symbol_list;
 
         		num_companies_found++;
-
-        		std::cout << return_limit << "|" << num_companies_found << std::endl;
     		}
     	}
 
     	// have to handle no results found
     	if(!num_companies_found)
     	{
-    		companies["NONE_FOUND"] = "";
+    		companies["NO_COMPANIES_FOUND"] = "";
     	}
 
     	return companies;
@@ -475,7 +471,7 @@ int main()
     	// have to handle no results found
     	if(!num_prices_found)
     	{
-    		symbol_prices["NONE_FOUND"] = "";
+    		symbol_prices["NO_DATA_FOUND"] = "";
     	}
 
     	return symbol_prices;
