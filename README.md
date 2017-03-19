@@ -3,7 +3,7 @@ Simple crow based server for requesting and displaying 30 days worth of averages
 
 ## Dependencies:
 
-### Server (crow + C++)
+### Server (crow + C++14 compatible compiler)
 1. [boost (v1.58.0)](http://www.boost.org/)   	- C++ extension libraries
 2. [cmake (v3.5.1)](https://cmake.org/)		- Flexible make configuration 
 3. [crow](https://github.com/ipkn/crow)	- Simple/fast C++ HTTP server backend 
@@ -25,11 +25,11 @@ CrowStorm icons were created from the original artwork of [shadow-2016 on devian
 
 ## Configure and test crow install
 
-Tested on x64 Ubuntu 16.04 LTS:
+Tested on: x64 gcc 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4)
 
 ### cmake (v3.5.1)
 ~~~~
-sudo -apt -get install cmake
+sudo apt-get install cmake
 ~~~~
 
 ### tmalloc (v4.X)
