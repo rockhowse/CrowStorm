@@ -63,7 +63,7 @@ sudo apt-get install libcurl4-gnutls-dev
 *NOTE* crow and CrowStorm should be cloned into the same parent directory as CrowStorm relies on the relative path ../crow
 
 ~~~~
-clone https://github.com/ipkn/crow
+git clone https://github.com/ipkn/crow
 ~~~~
 
 You should now have everything you need to compile the crow server/example/tests:
@@ -73,7 +73,31 @@ cd crow
 mkdir build
 cd build
 cmake .. 
+
+-- The C compiler identification is GNU 5.4.0
+-- The CXX compiler identification is GNU 5.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
 -- Found Tcmalloc: /usr/lib/libtcmalloc.so
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - not found
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
 -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libssl.so;/usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.0.2g") 
 -- No build type selected, default to Release
 -- Boost version: 1.58.0
@@ -87,12 +111,32 @@ cmake ..
 -- Generating done
 -- Build files have been written to: /home/rockhowse/chupacabra/crow/build
 make
+...
+[100%] Generating test.py
+[100%] Built target template_test_copy
 ctest
+Test project /home/rockhowse/chupacabra/crow/build
+    Start 1: crow_test
+1/2 Test #1: crow_test ........................   Passed    0.07 sec
+    Start 2: template_test
+2/2 Test #2: template_test ....................   Passed    0.37 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.44 sec
 ~~~~
 
-At this point you should be able to compile 100% and run the tests 100%
+You should have been able to compile 100% and run the tests 100%. If this was NOT the case, make sure to consult the crow documentation until all dependencies are satisfied before moving on.
 
 ## Compile and test the crow_storm application
+
+Assuming you are still located in the crow/build directory perform the following commands:
+
+~~~~
+cd ../../
+git clone https://github.com/rockhowse/CrowStorm
+cd CrowStorm
+~~~~
 
 ### Example usage
 
