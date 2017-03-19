@@ -1,6 +1,77 @@
 # CrowStorm
 Simple crow based server and single-page HTML5 based client for searching and displaying the past 30 day's OHLC and volume data for a selected company and symbol.
 
+## Flow Diagram
+
+Here is the basic flow of the CrowStorm application including all client and server side data calls and URL formats:
+
+![CrowStorm ~ Flow Diagram](http://rockhowse.com/projects/CrowStorm/CrowStorm-FlowDiagram.png)
+
+## Data Calls
+
+The CrowStorm API consists of two main data calls:
+
+1. Search
+
+    * query - prefix of company name
+    * limit - limit return results to this number
+
+~~~~
+/company/<query>/<limit>
+~~~~
+
+Example that searches for any companies that start with "apple" and limits the results to 5 records
+
+~~~~
+/company/app/5
+
+{
+  "Applied DNA Sciences Inc": "APDN|APDNW",
+  "Apple Hospitality REIT, Inc.": "APLE",
+  "AppFolio, Inc.": "APPF",
+  "Apple Inc.": "AAPL",
+  "Appliance Recycling Centers of America, Inc.": "ARCI"
+}
+~~~~
+
+2. Chart
+
+    * symbol - stock "ticker symbol" aligned to yahoo's query API symbology
+
+~~~~
+/symbol/csv/<symbol>
+~~~~
+
+Example that requests the last 30 days of OHLC and volume data for the ticker symbol 'APPL' for Apple inc.
+
+~~~~
+/symbol/csv/AAPL
+
+Date,Open,High,Low,Close,Volume,Adj Close
+2017-03-17,141.00,141.00,139.889999,139.990005,43597400,139.990005
+2017-03-16,140.720001,141.020004,140.259995,140.690002,19132500,140.690002
+2017-03-15,139.410004,140.75,139.029999,140.460007,25566800,140.460007
+2017-03-14,139.300003,139.649994,138.839996,138.990005,15189700,138.990005
+2017-03-13,138.850006,139.429993,138.820007,139.199997,17042400,139.199997
+2017-03-10,139.25,139.360001,138.639999,139.139999,19488000,139.139999
+2017-03-09,138.740005,138.789993,137.050003,138.679993,22065200,138.679993
+2017-03-08,138.949997,139.800003,138.820007,139.00,18681800,139.00
+2017-03-07,139.059998,139.979996,138.789993,139.520004,17267500,139.520004
+2017-03-06,139.369995,139.770004,138.600006,139.339996,21155300,139.339996
+2017-03-03,138.779999,139.830002,138.589996,139.779999,21108100,139.779999
+2017-03-02,140.00,140.279999,138.759995,138.960007,26153300,138.960007
+2017-03-01,137.889999,140.149994,137.600006,139.789993,36272400,139.789993
+2017-02-28,137.080002,137.440002,136.699997,136.990005,23403500,136.990005
+2017-02-27,137.139999,137.440002,136.279999,136.929993,20196400,136.929993
+2017-02-24,135.910004,136.660004,135.279999,136.660004,21690900,136.660004
+2017-02-23,137.380005,137.479996,136.300003,136.529999,20704100,136.529999
+2017-02-22,136.429993,137.119995,136.110001,137.110001,20745300,137.110001
+2017-02-21,136.229996,136.75,135.979996,136.699997,24265100,136.699997
+2017-02-17,135.100006,135.830002,135.100006,135.720001,22084500,135.720001
+~~~~
+
+Using these two data calls, you could easily use any client side HTTP library to search for symbols and request for the OHLC and volume data for any U.S. security on Nasdaq's symbol list. 
+
 ## Dependencies:
 
 ### Server (crow + C++14 compatible compiler)

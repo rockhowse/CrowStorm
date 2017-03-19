@@ -485,7 +485,7 @@ int main()
 		// let's build the URL based on the symbol and 30 for now
 		// ENHANCEMENT ~ allow user to choose number of days (add max limit server side)
 		yahoo_url = build_yahoo_url(symbol_query, 30);
-
+			
 		// pull in data
 		std::ostringstream os_yahoo_data_stream;
 		if(CURLE_OK == curl_read(yahoo_url, os_yahoo_data_stream))
